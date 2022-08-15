@@ -1,11 +1,21 @@
 // search method 
 document.getElementById('search-btn').addEventListener('click', function (event) {
     event.preventDefault();
-    const inputValue = document.getElementById('input-field').value;
+    const input = document.getElementById('input-field');
+    const inputValue = input.value;
+    if (inputValue === '') {
+        alert('Please enter a valid name')
+        return;
+    }
+    else if (isNaN(inputValue) !== true || inputValue < 1) {
+        alert('Please enter a player name')
+        return;
+    }
     const url = `https://www.thesportsdb.com/api/v1/json/2/searchplayers.php?p=${inputValue}`;
     fetch(url)
         .then(res => res.json())
         .then(data => searchResult(data.player))
+    input.value = '';
 })
 
 // search result function 
@@ -16,7 +26,7 @@ function searchResult(players) {
         const div = document.createElement('div');
         div.innerHTML = `
         <div class="card h-100">
-        <img src="${player.strCutout}" class="card-img-top" alt="Image are not available">
+        <img src="${player.strThumb}" class="card-img-top" alt="Image are not available">
         <div class="card-body">
         <h5 class="card-title">${player.strPlayer}</h5>
         <p class="card-text">${player.strDescriptionEN.slice(0, 150)}</p>
@@ -27,7 +37,8 @@ function searchResult(players) {
         </div>
         `;
         mainContainer.appendChild(div);
-        console.log(player)
+        const detailsContainer = document.getElementById('details-container');
+        detailsContainer.innerHTML = '';
     })
 }
 
@@ -37,7 +48,7 @@ function details(playerId) {
     fetch(url)
         .then(res => res.json())
         .then(data => displayDetails(data.players[0]))
-}
+};
 
 // display details 
 function displayDetails(player) {
@@ -59,5 +70,5 @@ function displayDetails(player) {
     </div>
     `;
     detailsContainer.appendChild(div);
+};
 
-}
