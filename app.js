@@ -19,7 +19,7 @@ function searchResult(players) {
         <img src="${player.strCutout}" class="card-img-top" alt="Image are not available">
         <div class="card-body">
         <h5 class="card-title">${player.strPlayer}</h5>
-        <p class="card-text">${player.strDescriptionEN.slice(0, 200)}</p>
+        <p class="card-text">${player.strDescriptionEN.slice(0, 150)}</p>
         </div>
         <div class="card-footer">
            <a href="#" onclick="details(${player.idPlayer})" class="btn btn-primary">More Details</a>
@@ -27,6 +27,7 @@ function searchResult(players) {
         </div>
         `;
         mainContainer.appendChild(div);
+        console.log(player)
     })
 }
 
@@ -36,23 +37,27 @@ function details(playerId) {
     fetch(url)
         .then(res => res.json())
         .then(data => displayDetails(data.players[0]))
-
-
 }
 
 // display details 
 function displayDetails(player) {
-    console.log(player)
     const detailsContainer = document.getElementById('details-container');
     detailsContainer.innerHTML = '';
     const div = document.createElement('div');
     div.innerHTML = `
     <div class="card" style="width: 30rem;">
-    <img src="..." class="card-img-top" alt="...">
+    <img src="${player.strCutout}" class="card-img-top" alt="...">
     <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p class="card-text"><span class="fw-bold">Name: </span> ${player.strPlayer}</p>
+    <p class="card-text"><span class="fw-bold">Place of Birth: </span> ${player.strBirthLocation}</p>
+    <p class="card-text"><span class="fw-bold">Nationality: </span> ${player.strNationality}</p>
+    <p class="card-text"><span class="fw-bold">Position: </span> ${player.strPosition}</p>
+    <p class="card-text"><span class="fw-bold">Player of Team: </span> ${player.strTeam}</p>
+    <p class="card-text"><span class="fw-bold">Twitter: </span> ${player.strTwitter}</p>
+    <p class=" card-text"><span class="fw-bold">Description: </span> ${player.strDescriptionEN.slice(0, 300)}</p>
     </div>
     </div>
     `;
     detailsContainer.appendChild(div);
+
 }
